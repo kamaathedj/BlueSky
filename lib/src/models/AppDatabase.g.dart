@@ -61,7 +61,7 @@ class _$AppDatabase extends AppDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
-  PlayerDao? _playerDaoInstance;
+  TaskDao? _taskDaoInstance;
 
   Future<sqflite.Database> open(
     String path,
@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Player` (`id` INTEGER NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Task` (`task_id` INTEGER NOT NULL, `title` TEXT NOT NULL, `desciption` TEXT NOT NULL, PRIMARY KEY (`task_id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -94,16 +94,16 @@ class _$AppDatabase extends AppDatabase {
   }
 
   @override
-  PlayerDao get playerDao {
-    return _playerDaoInstance ??= _$PlayerDao(database, changeListener);
+  TaskDao get taskDao {
+    return _taskDaoInstance ??= _$TaskDao(database, changeListener);
   }
 }
 
-class _$PlayerDao extends PlayerDao {
-  _$PlayerDao(
+class _$TaskDao extends TaskDao {
+  _$TaskDao(
     this.database,
     this.changeListener,
-  ) : _queryAdapter = QueryAdapter(database, changeListener);
+  ) : _queryAdapter = QueryAdapter(database);
 
   final sqflite.DatabaseExecutor database;
 
@@ -112,19 +112,9 @@ class _$PlayerDao extends PlayerDao {
   final QueryAdapter _queryAdapter;
 
   @override
-  Future<List<Player>> getPlayers() async {
-    return _queryAdapter.queryList('SELECT * FROM Player',
-        mapper: (Map<String, Object?> row) =>
-            Player(row['id'] as int, row['name'] as String));
-  }
-
-  @override
-  Stream<Player?> getPlayer(int id) {
-    return _queryAdapter.queryStream('SELECT * FROM Player WHERE id =?1',
-        mapper: (Map<String, Object?> row) =>
-            Player(row['id'] as int, row['name'] as String),
-        arguments: [id],
-        queryableName: 'Player',
-        isView: false);
+  Future<List<Task>> getTasks() async {
+    return _queryAdapter.queryList('SELECT * FROM Task',
+        mapper: (Map<String, Object?> row) => Task(row['task_id'] as int,
+            row['title'] as String, row['desciption'] as String));
   }
 }
