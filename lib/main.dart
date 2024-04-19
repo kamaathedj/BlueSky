@@ -1,4 +1,5 @@
 import 'package:blue_sky/src/app.dart';
+import 'package:blue_sky/src/navigation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,6 +16,7 @@ class MainApp extends StatelessWidget {
         body: Center(
           child:App(),
         ),
+        floatingActionButton: myFloatingActionButton(),
       ),
     );
   }
