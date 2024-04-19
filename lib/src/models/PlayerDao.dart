@@ -5,4 +5,7 @@ import 'package:floor/floor.dart';
 abstract class PlayerDao{
   @Query('SELECT * FROM Player')
   Future<List<Player>> getPlayers();
+
+  @Query('SELECT * FROM Player WHERE id =:id')
+  Stream<Player?> getPlayer(int id);
 }

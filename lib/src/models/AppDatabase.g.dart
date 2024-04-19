@@ -103,7 +103,7 @@ class _$PlayerDao extends PlayerDao {
   _$PlayerDao(
     this.database,
     this.changeListener,
-  ) : _queryAdapter = QueryAdapter(database);
+  ) : _queryAdapter = QueryAdapter(database, changeListener);
 
   final sqflite.DatabaseExecutor database;
 
@@ -116,5 +116,15 @@ class _$PlayerDao extends PlayerDao {
     return _queryAdapter.queryList('SELECT * FROM Player',
         mapper: (Map<String, Object?> row) =>
             Player(row['id'] as int, row['name'] as String));
+  }
+
+  @override
+  Stream<Player?> getPlayer(int id) {
+    return _queryAdapter.queryStream('SELECT * FROM Player WHERE id =?1',
+        mapper: (Map<String, Object?> row) =>
+            Player(row['id'] as int, row['name'] as String),
+        arguments: [id],
+        queryableName: 'Player',
+        isView: false);
   }
 }
