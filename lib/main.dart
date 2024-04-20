@@ -1,9 +1,15 @@
-import 'package:blue_sky/src/app.dart';
+import 'package:blue_sky/src/Home.dart';
 import 'package:blue_sky/src/navigation.dart';
+import 'package:blue_sky/src/pages/CreateTask.dart';
+import 'package:blue_sky/src/pages/SettingPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp( 
+    ProviderScope(
+      child:  MainApp())
+      );
 }
 
 class MainApp extends StatelessWidget {
@@ -11,13 +17,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child:App(),
-        ),
-        floatingActionButton: myFloatingActionButton(),
-      ),
+    return  MaterialApp(
+      routes: <String, WidgetBuilder> {
+      '/create': (BuildContext context) => CreateTask(),
+      '/setting': (BuildContext context) => SettingPage(),
+    },
+      home: Home()
     );
   }
 }

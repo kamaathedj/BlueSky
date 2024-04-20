@@ -1,27 +1,42 @@
-import 'dart:ffi';
-
+import 'package:blue_sky/src/Home.dart';
+import 'package:blue_sky/src/pages/CreateTask.dart';
+import 'package:blue_sky/src/pages/SettingPage.dart';
+import 'package:blue_sky/src/state/navigation_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class myFloatingActionButton extends StatefulWidget {
-  const myFloatingActionButton({super.key});
+class myFloatingActionButton extends ConsumerWidget {
 
-  @override
-  State<myFloatingActionButton> createState() => _myFloatingActionButtonState();
+   myFloatingActionButton({super.key});
+
+
+   Set<String> selected = {'Home'};
+  //something is happening here and i dont like it at all
+void selectionChanged(Set<String> choice,BuildContext context, WidgetRef ref){
+  var watch = ref.watch(NavigationChangeNotifier.notifier);
+  selected = choice;
+    switch (selected.first) {
+      case 'Home':
+        print('home');
+        watch.changePage('Home');
+        Navigator.pushNamed(context, '/');
+
+      case 'Create':
+        watch.changePage('Create');
+        Navigator.of(context).pushNamed('/create');
+          print('create page');    
+      case 'Setting':
+        watch.changePage('Setting');
+        Navigator.pushNamed(context,'/setting');
+        print('setting');
+      default:
+    }
+     
 }
 
-class _myFloatingActionButtonState extends State<myFloatingActionButton> {
-
-  Set<String> selected = {'Primary'};
-void selectionChanged(Set<String> choice){
-  setState(() {
-    selected = choice;
-  });
-}
-
   @override
-  Widget build(BuildContext context) {
-    
-    
+  Widget build(BuildContext context,WidgetRef ref) {
+    var readSelected = ref.read(NavigationChangeNotifier.notifier).page_value;
     return Center(
       heightFactor: 1,
       child: FloatingActionButton.extended(
@@ -33,21 +48,21 @@ void selectionChanged(Set<String> choice){
         foregroundColor: Colors.transparent,
         onPressed: () {  },
         label: SegmentedButton(
-          onSelectionChanged: (choices) => selectionChanged(choices),
+          onSelectionChanged: (choices) => selectionChanged(choices,context,ref),
           segments: [
             ButtonSegment<String>(
+              value: 'Home',
+              label: Icon(Icons.home)
+              ),
+            ButtonSegment<String>(
               value: 'Create',
-              label: Icon(Icons.edit)
+              icon: Icon(Icons.edit)
               ),
             ButtonSegment<String>(
-              value: 'Primary',
-              icon: Icon(Icons.access_alarm)
-              ),
-            ButtonSegment<String>(
-              value: 'Something else',
-              label: Icon(Icons.account_balance_wallet_sharp)
+              value: 'Setting',
+              label: Icon(Icons.settings)
               )
-          ], selected: selected,
+          ], selected: {readSelected},
           ),
       ),
     );
