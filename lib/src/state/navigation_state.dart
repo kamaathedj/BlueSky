@@ -6,7 +6,7 @@ final NavigationChangeNotifier = ChangeNotifierProvider<NavigationNotifier>(
   (ref) => NavigationNotifier()
 );
 class NavigationNotifier extends ChangeNotifier{
-   String _pageValue ='Setting';
+   String _pageValue ='Home';
 
   String get page_value => _pageValue;
 

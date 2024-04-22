@@ -1,6 +1,3 @@
-import 'package:blue_sky/src/Home.dart';
-import 'package:blue_sky/src/pages/CreateTask.dart';
-import 'package:blue_sky/src/pages/SettingPage.dart';
 import 'package:blue_sky/src/state/navigation_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,19 +14,19 @@ void selectionChanged(Set<String> choice,BuildContext context, WidgetRef ref){
   selected = choice;
     switch (selected.first) {
       case 'Home':
-        print('home');
         watch.changePage('Home');
         Navigator.pushNamed(context, '/');
 
       case 'Create':
         watch.changePage('Create');
         Navigator.of(context).pushNamed('/create');
-          print('create page');    
+            
       case 'Setting':
         watch.changePage('Setting');
         Navigator.pushNamed(context,'/setting');
-        print('setting');
+        
       default:
+        throw Error();
     }
      
 }
@@ -63,6 +60,9 @@ void selectionChanged(Set<String> choice,BuildContext context, WidgetRef ref){
               label: Icon(Icons.settings)
               )
           ], selected: {readSelected},
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll<Color>(const Color.fromARGB(255, 160, 129, 247),),
+          ),
           ),
       ),
     );
