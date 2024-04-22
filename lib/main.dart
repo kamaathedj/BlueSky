@@ -18,6 +18,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
+      debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder> {
       '/create': (BuildContext context) => CreateTask(),
       '/setting': (BuildContext context) => SettingPage(),
