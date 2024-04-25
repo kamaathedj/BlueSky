@@ -50,7 +50,7 @@ const Home({ super.key });
                                   child: DropdownButton(
                                     items: [
                                       DropdownMenuItem(child: Text('January')),
-                                    
+                                      
         
                                     ], 
                                     onChanged: (s)=>print('nana')),
@@ -61,19 +61,31 @@ const Home({ super.key });
               ),
               //date cards
                 DateCards(),
-              //cards
+              //two cards
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 
                 Card.filled(
                   child: SizedBox.square(
-                    dimension:170,       
+                    dimension:170, 
+                    child: ListTile(
+                      title: Text("Official workspace"),
+                    ),      
                   ),
                 ),
                 Card.filled(
                   child: SizedBox.fromSize(
-                    size: Size(170, 250),       
+                    size: Size(170, 250),
+                    child: RadioListTile(
+                      title: Text("Personal workspace"),
+                      subtitle:Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text("Blue sky project"),
+                      ), 
+                      onChanged: (bool? value) {  }, 
+                      value: false, groupValue: false ,
+                    ),       
                   ),
                 ),
               ],

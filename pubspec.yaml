@@ -15,6 +15,7 @@ dependencies:
   floor: ^1.4.2
   fluent_ui: ^4.8.6
   awesome_notifications: ^0.8.2
+  date_field: ^5.0.1
 
 dev_dependencies:
   flutter_test:

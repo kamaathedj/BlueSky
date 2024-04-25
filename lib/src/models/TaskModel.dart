@@ -2,7 +2,7 @@ import 'package:floor/floor.dart';
 
 @entity
 class Task{
-  @primaryKey
+  @PrimaryKey(autoGenerate: true)
   final int task_id;
   final String title;
   final String desciption;
