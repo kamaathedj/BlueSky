@@ -103,13 +103,42 @@ class _$TaskDao extends TaskDao {
   _$TaskDao(
     this.database,
     this.changeListener,
-  ) : _queryAdapter = QueryAdapter(database);
+  )   : _queryAdapter = QueryAdapter(database),
+        _taskInsertionAdapter = InsertionAdapter(
+            database,
+            'Task',
+            (Task item) => <String, Object?>{
+                  'taskid': item.taskid,
+                  'title': item.title,
+                  'desciption': item.desciption,
+                  'startdate': _dateTimeConverter.encode(item.startdate),
+                  'enddate': _dateTimeConverter.encode(item.enddate),
+                  'time': _dateTimeConverter.encode(item.time),
+                  'workspace': item.workspace.index
+                }),
+        _taskDeletionAdapter = DeletionAdapter(
+            database,
+            'Task',
+            ['taskid'],
+            (Task item) => <String, Object?>{
+                  'taskid': item.taskid,
+                  'title': item.title,
+                  'desciption': item.desciption,
+                  'startdate': _dateTimeConverter.encode(item.startdate),
+                  'enddate': _dateTimeConverter.encode(item.enddate),
+                  'time': _dateTimeConverter.encode(item.time),
+                  'workspace': item.workspace.index
+                });
 
   final sqflite.DatabaseExecutor database;
 
   final StreamController<String> changeListener;
 
   final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Task> _taskInsertionAdapter;
+
+  final DeletionAdapter<Task> _taskDeletionAdapter;
 
   @override
   Future<List<Task>> getTasks() async {
@@ -125,16 +154,13 @@ class _$TaskDao extends TaskDao {
   }
 
   @override
-  Future<List<Task>> AddTasks() async {
-    return _queryAdapter.queryList('INSERT  * FROM Task',
-        mapper: (Map<String, Object?> row) => Task(
-            row['taskid'] as int,
-            row['title'] as String,
-            row['desciption'] as String,
-            _dateTimeConverter.decode(row['startdate'] as int),
-            _dateTimeConverter.decode(row['enddate'] as int),
-            _dateTimeConverter.decode(row['time'] as int),
-            Choice.values[row['workspace'] as int]));
+  Future<void> addTasks(Task task) async {
+    await _taskInsertionAdapter.insert(task, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteTask(Task task) async {
+    await _taskDeletionAdapter.delete(task);
   }
 }
 

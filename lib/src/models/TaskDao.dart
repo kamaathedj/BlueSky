@@ -6,6 +6,9 @@ abstract class TaskDao{
   @Query('SELECT * FROM Task')
   Future<List<Task>> getTasks();
 
-  @Query('INSERT  * FROM Task')
-  Future<List<Task>> AddTasks();
+  @insert
+  Future<void> addTasks(Task task);
+
+  @delete
+  Future<void> deleteTask(Task task);
 }
