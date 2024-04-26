@@ -16,6 +16,9 @@ dependencies:
   fluent_ui: ^4.8.6
   awesome_notifications: ^0.8.2
   date_field: ^5.0.1
+  sqflite: ^2.3.3
+  intl: ^0.18.1
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:

@@ -8,6 +8,6 @@ void getDatabase()async{
     Task t  = Task(1, "Task schduler app", "does task scheduling", DateTime.now(), DateTime.now(), DateTime.now(),Choice.personal);
     database.taskDao.addTasks(t);
     
-   database.taskDao.getTasks().then((value) => print(value) );
+   database.taskDao.getTasks().then((value) => print(value.single.title ));
   
 }

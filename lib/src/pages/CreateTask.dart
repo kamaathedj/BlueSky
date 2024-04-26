@@ -1,9 +1,5 @@
-import 'package:blue_sky/src/navigation.dart';
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
-import 'package:flutter/widgets.dart';
 
 // ignore: must_be_immutable
 class CreateTask extends StatelessWidget {
