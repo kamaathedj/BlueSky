@@ -5,4 +5,7 @@ import 'package:floor/floor.dart';
 abstract class TaskDao{
   @Query('SELECT * FROM Task')
   Future<List<Task>> getTasks();
+
+  @Query('INSERT  * FROM Task')
+  Future<List<Task>> AddTasks();
 }

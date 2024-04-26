@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Task` (`task_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `desciption` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `Task` (`taskid` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `title` TEXT NOT NULL, `desciption` TEXT NOT NULL, `startdate` INTEGER NOT NULL, `enddate` INTEGER NOT NULL, `time` INTEGER NOT NULL, `workspace` INTEGER NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -114,7 +114,29 @@ class _$TaskDao extends TaskDao {
   @override
   Future<List<Task>> getTasks() async {
     return _queryAdapter.queryList('SELECT * FROM Task',
-        mapper: (Map<String, Object?> row) => Task(row['task_id'] as int,
-            row['title'] as String, row['desciption'] as String));
+        mapper: (Map<String, Object?> row) => Task(
+            row['taskid'] as int,
+            row['title'] as String,
+            row['desciption'] as String,
+            _dateTimeConverter.decode(row['startdate'] as int),
+            _dateTimeConverter.decode(row['enddate'] as int),
+            _dateTimeConverter.decode(row['time'] as int),
+            Choice.values[row['workspace'] as int]));
+  }
+
+  @override
+  Future<List<Task>> AddTasks() async {
+    return _queryAdapter.queryList('INSERT  * FROM Task',
+        mapper: (Map<String, Object?> row) => Task(
+            row['taskid'] as int,
+            row['title'] as String,
+            row['desciption'] as String,
+            _dateTimeConverter.decode(row['startdate'] as int),
+            _dateTimeConverter.decode(row['enddate'] as int),
+            _dateTimeConverter.decode(row['time'] as int),
+            Choice.values[row['workspace'] as int]));
   }
 }
+
+// ignore_for_file: unused_element
+final _dateTimeConverter = DateTimeConverter();

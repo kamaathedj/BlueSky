@@ -23,9 +23,14 @@ DateTime? selectedDate;
             ),
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(child: Icon(Icons.check),),
+          
+          GestureDetector(
+            onTap:  () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text('Task saved') 
+            )) ,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircleAvatar(child: Icon(Icons.check),),
+            ),
           )
         ],
       ),
@@ -62,7 +67,7 @@ DateTime? selectedDate;
               ),
             ),
           ),
-
+      
           //Date input widgets
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -117,7 +122,7 @@ DateTime? selectedDate;
             ],
             
           ),
-
+      
           // Time picker
           Text("Daily Timeline",style: TextStyle(fontSize: 17),),
           Padding(
