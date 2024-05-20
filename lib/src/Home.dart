@@ -34,7 +34,7 @@ const Home({ super.key });
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SearchBar(
-                hintText: "Search for tasks",
+                hintText: "Search for tasks 😳",
                 
               ),
             
@@ -70,7 +70,9 @@ const Home({ super.key });
                   child: SizedBox.square(
                     dimension:170, 
                     child: ListTile(
-                      title: Text("Official workspace"),
+                      
+                      title: Text("Official workspace",style: TextStyle(fontSize: 14),),
+                      subtitle: Text('---------------------------'),
                     ),      
                   ),
                 ),

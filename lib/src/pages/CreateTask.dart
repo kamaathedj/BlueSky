@@ -6,8 +6,32 @@ class CreateTask extends StatelessWidget {
    CreateTask({super.key});
 
 DateTime? selectedDate;
+
   @override
   Widget build(BuildContext context) {
+    final ValueNotifier<bool> isEnabled = ValueNotifier(false);
+    late final TextEditingController titleTextFieldController;
+    late final TextEditingController descriptionTextFieldController;
+
+    titleTextFieldController = TextEditingController()
+      ..addListener(() { 
+        if(descriptionTextFieldController.text.isNotEmpty && titleTextFieldController.text.isNotEmpty){
+          isEnabled.value = true; 
+        }else{
+          isEnabled.value = false;
+        }
+      });
+
+    descriptionTextFieldController = TextEditingController()
+      ..addListener(() { 
+        if(titleTextFieldController.text.isNotEmpty && descriptionTextFieldController.text.isNotEmpty){
+          isEnabled.value = true;
+        }else{
+          isEnabled.value = false; 
+        }
+      });
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text("New Task"),
@@ -20,15 +44,18 @@ DateTime? selectedDate;
             ),
         ),
         actions: [
-          
-          GestureDetector(
-            onTap:  () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text('Task saved') 
-            )) ,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(child: Icon(Icons.check),),
-            ),
-          )
+          ValueListenableBuilder<bool>(
+            valueListenable: isEnabled, 
+            builder: (context,value,child){
+              return GestureDetector(
+                onTap: value? () => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text('Task saved')
+                )) :null,
+                child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CircleAvatar(child: Icon(Icons.check),),
+               ),
+              );
+            })
         ],
       ),
       body: Padding(
@@ -39,6 +66,7 @@ DateTime? selectedDate;
             Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: TextField(
+              controller: titleTextFieldController,
               decoration: InputDecoration(
                 filled: true,
                 border: OutlineInputBorder(
@@ -53,6 +81,7 @@ DateTime? selectedDate;
             Padding(
             padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
             child: TextField(
+              controller: descriptionTextFieldController,
               maxLines: 5,
               minLines: 5,
               decoration: InputDecoration(
@@ -78,6 +107,9 @@ DateTime? selectedDate;
                     child: SizedBox(
                       width: 150,
                       child: DateTimeFormField(
+                        onSaved: (value)=>{
+                          print(value)
+                        },
                         mode: DateTimeFieldPickerMode.date,
                           decoration:  InputDecoration(
                             border: OutlineInputBorder(borderRadius:BorderRadius.circular(30) ),
