@@ -1,12 +1,13 @@
 import 'package:blue_sky/src/navigation.dart';
+import 'package:blue_sky/src/state/database_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Home extends StatelessWidget {
+class Home  extends StatelessWidget {
 const Home({ super.key });
 
   @override
   Widget build(BuildContext context){
-    
     return Scaffold(
       appBar: AppBar(
         title: Column(
@@ -29,7 +30,7 @@ const Home({ super.key });
 
       ),
       body: ListView(
-        shrinkWrap: true,
+        //shrinkWrap: true,
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -100,38 +101,37 @@ const Home({ super.key });
                 Text("see more...")
               ],
             ),
-            Card.filled(
-              child: SizedBox.fromSize(
-                size: Size(300,60),
-                child: ListTile(
-                  title: Text("C++ projects"),
-                  subtitle: Text("Add pointers to the final .dll file"),
-                  ),
-              ),
-            ),
-                        Card.filled(
-              child: SizedBox.fromSize(
-                size: Size(300,60),
-                child: ListTile(
-                  title: Text("Flutter projects"),
-                  subtitle: Text("New app project"),
-                  ),
-              ),
-            ),
-                        Card.filled(
-              child: SizedBox.fromSize(
-                size: Size(300,90),
-                child: ListTile(
-                  title: Text("Java projects"),
-                  subtitle: Text("Spring boot starter project"),
-                  ),
-              ),
-            ),
-        
+            TodayTasks()
           ],
         ),
       floatingActionButton: myFloatingActionButton(),
     );
+  }
+}
+
+
+class TodayTasks extends ConsumerWidget {
+  const TodayTasks({super.key});
+
+  @override
+  Widget build(BuildContext context,WidgetRef ref) {
+    var tasks = ref.read(DatabaseChangeNotifier.notifier).tasks;
+    return tasks.isEmpty ?Text('No projects'):ListView.builder(
+              shrinkWrap: true,
+              itemCount: tasks.length,
+              itemBuilder:(BuildContext context,int index){
+                var item  = tasks[index];
+                return Card.filled(
+                 child: SizedBox.fromSize(
+                    size: Size(300,60),
+                    child: ListTile(
+                      title: Text(item.title),
+                      subtitle: Text(item.desciption),
+                    ),
+                 ),
+                   );
+                 }
+                 );
   }
 }
 

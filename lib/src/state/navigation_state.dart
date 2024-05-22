@@ -1,4 +1,3 @@
-import 'package:blue_sky/src/models/databaseInstnce.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,7 +12,6 @@ class NavigationNotifier extends ChangeNotifier{
 
   void changePage(String value){
     _pageValue = value;
-    getDatabase();
     notifyListeners();
   }
 }

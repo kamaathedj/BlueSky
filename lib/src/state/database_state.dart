@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:blue_sky/src/Repository/Task_database.dart';
 import 'package:blue_sky/src/models/AppDatabase.dart';
 import 'package:blue_sky/src/models/TaskModel.dart';
 import 'package:flutter/foundation.dart';
@@ -9,17 +12,27 @@ final DatabaseChangeNotifier = ChangeNotifierProvider<DatabaseNotifier>(
 
 class DatabaseNotifier extends ChangeNotifier {
 
-  Future<List<Task>> getTasks() async {
-    final database = await $FloorAppDatabase.databaseBuilder('AppDatabase.db').build();
-    notifyListeners();
-    return  database.taskDao.getTasks();
-    
+  DatabaseNotifier(){
+    insertTask();
+    getTasks();
+  }
+  TaskDatabase td =  TaskDatabase();
+  List<Task> _tasks = [];
+  List<Task> get tasks => _tasks;
+
+  Future<void> getTasks() async {
+    _tasks = await td.getTasks();
+    notifyListeners();  
+    print(_tasks.length);
+
   }
 
-  Future<void> insertTask(Task task)async{
-    final database = await $FloorAppDatabase.databaseBuilder('AppDatabase.db').build();
+  Future<void> insertTask()async{
+    
+    Task t  = Task(1, "Task schduler app", "does task scheduling", DateTime.now(), DateTime.now(), DateTime.now(),Choice.personal);
+    td.insertTask(t);
+    _tasks.add(t);
     notifyListeners();
-    return database.taskDao.addTasks(task);
   }
 
   
