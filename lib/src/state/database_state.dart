@@ -1,13 +1,12 @@
-import 'dart:ffi';
+import 'dart:collection';
 
 import 'package:blue_sky/src/Repository/Task_database.dart';
-import 'package:blue_sky/src/models/AppDatabase.dart';
 import 'package:blue_sky/src/models/TaskModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-final DatabaseChangeNotifier = ChangeNotifierProvider<DatabaseNotifier>(
+final DatabaseChangeNotifier = ChangeNotifierProvider.autoDispose<DatabaseNotifier>(
   (ref) => DatabaseNotifier());
 
 class DatabaseNotifier extends ChangeNotifier {
@@ -18,7 +17,7 @@ class DatabaseNotifier extends ChangeNotifier {
   }
   TaskDatabase td =  TaskDatabase();
   List<Task> _tasks = [];
-  List<Task> get tasks => _tasks;
+  UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
 
   Future<void> getTasks() async {
     _tasks = await td.getTasks();

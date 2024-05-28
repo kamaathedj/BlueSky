@@ -1,3 +1,4 @@
+import 'package:blue_sky/src/models/TaskModel.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 
@@ -6,6 +7,26 @@ class CreateTask extends StatelessWidget {
    CreateTask({super.key});
 
 DateTime? selectedDate;
+
+late final TextEditingController titleTextFieldController;
+
+late final TextEditingController descriptionTextFieldController;
+
+DateTime? startDate;
+
+DateTime? endDate;
+
+DateTime? timeline ;
+
+Choice? workspace;
+
+String? newValue = 'personal';
+void onSavingTask(){
+
+  var title = titleTextFieldController.text;
+  var description = descriptionTextFieldController.text;
+
+}
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +129,7 @@ DateTime? selectedDate;
                       width: 150,
                       child: DateTimeFormField(
                         onSaved: (value)=>{
-                          print(value)
+                          startDate = value
                         },
                         mode: DateTimeFieldPickerMode.date,
                           decoration:  InputDecoration(
@@ -142,7 +163,9 @@ DateTime? selectedDate;
                           firstDate: DateTime.now().add(Duration(days: 10)),
                           lastDate: DateTime.now().add(Duration(days: 40)),
                           initialPickerDateTime: DateTime.now().add( Duration(days: 20)),
-                          onChanged: (DateTime? value) => print(value.toString()),
+                          onSaved: (DateTime? value) {
+                            endDate = value;
+                          }, onChanged: (DateTime? value) { print(value); },
                         ),
                     ),
                   ),
