@@ -1,11 +1,18 @@
+import 'dart:ffi';
+
 import 'package:blue_sky/src/models/TaskModel.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 
 // ignore: must_be_immutable
-class CreateTask extends StatelessWidget {
+class CreateTask extends StatefulWidget {
    CreateTask({super.key});
 
+  @override
+  State<CreateTask> createState() => _CreateTaskState();
+}
+
+class _CreateTaskState extends State<CreateTask> {
 DateTime? selectedDate;
 
 late final TextEditingController titleTextFieldController;
@@ -20,7 +27,8 @@ DateTime? timeline ;
 
 Choice? workspace;
 
-String? newValue = 'personal';
+ String newValue = "personal";
+
 void onSavingTask(){
 
   var title = titleTextFieldController.text;
@@ -208,12 +216,19 @@ void onSavingTask(){
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DropdownButton(
+                  child: DropdownButton<String>(
+                    value: newValue,
                     borderRadius: BorderRadius.circular(30),
-                    items:[
-                      DropdownMenuItem(child: Text('Personal')),
-                    ], 
-                    onChanged: ((value) => print(value.toString())
+                    items:<String>["Personal","Official"].map((String x){
+                      return DropdownMenuItem<String>(
+                        value: x.toString(),
+                        child: Text(x));
+                    }).toList(), 
+                    onChanged: ((value){
+                      setState(() {
+                        newValue  = value.toString();
+                      });
+                    }
                     ),
                   ),
                 ),
@@ -228,3 +243,4 @@ void onSavingTask(){
     
   }
 }
+
