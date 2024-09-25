@@ -27,7 +27,7 @@ DateTime? timeline ;
 
 Choice? workspace;
 
- String newValue = "personal";
+ Choice newValue = Choice.official;
 
 void onSavingTask(){
 
@@ -216,17 +216,17 @@ void onSavingTask(){
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DropdownButton<String>(
+                  child: DropdownButton<Choice>(
                     value: newValue,
                     borderRadius: BorderRadius.circular(30),
-                    items:<String>["Personal","Official"].map((String x){
-                      return DropdownMenuItem<String>(
-                        value: x.toString(),
-                        child: Text(x));
+                    items:Choice.values.map((Choice x){
+                      return DropdownMenuItem<Choice>(
+                        value: x,
+                        child: Text(x.toString()));
                     }).toList(), 
                     onChanged: ((value){
                       setState(() {
-                        newValue  = value.toString();
+                        newValue  = value!;
                       });
                     }
                     ),
